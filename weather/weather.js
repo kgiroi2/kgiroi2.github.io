@@ -14,11 +14,12 @@ var radar = L.tileLayer.wms(radarUrl, radarDisplayOptions).addTo(map);
 var weatherAlertsUrl = 'https://api.weather.gov/alerts/active?region_type=land';
 $.getJSON(weatherAlertsUrl, function(data) {
   L.geoJSON(data, {
-    // Color all alert polygons yellow, but color Severe polygons pink, color minor polygons green
+    // Color all alert polygons yellow, but color Severe polygons pink, color minor polygons green, color moderate polygons orange
     style: function(feature){
       var alertColor = 'yellow';
       if (feature.properties.severity === 'Severe') alertColor = 'pink'; 
-      if (feature.properties.minor === 'minor') alertColor = 'green'
+      if (feature.properties.severity === 'Minor') alertColor = 'green';
+      if (feature.properties.severity === 'Moderate') alertColor = 'orange'
       return { color: alertColor }
     },
     // Add a popup on each feature showing the NWS alert headline
